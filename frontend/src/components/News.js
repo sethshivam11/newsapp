@@ -9,7 +9,6 @@ const News = (props) => {
   const [loading, setLoading] = useState(true);
   const [totalResults, setTotalResults] = useState(0);
   const [page, setPage] = useState(1);
-  const host = "https://newsapp-zbed.onrender.com";
   const capital = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -19,44 +18,44 @@ const News = (props) => {
     document.title = capital(
       props.category === "general" ? "NewsApp" : props.category + " | NewsApp"
     );
-    // eslint-disable-next-line
   }, []);
+
   const updateNews = async () => {
-    try{
-    props.setProgress(30);
-    // const apiUrl = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&props.pageSize=${props.props.pageSize}`;
-    const apiUrl = `${host}/api?category=${props.category}&pageSize=${props.pageSize}&page=${page}`;
-    props.setProgress(50);
-    let data = await fetch(apiUrl);
-    props.setProgress(80);
-    let parsedData = await data.json();
-    if (parsedData.status === "ok") {
-      setArticles(parsedData.articles);
-      setTotalResults(parsedData.totalResults);
-      setLoading(false);
-      props.setProgress(100);
+
+    try {
+      props.setProgress(30);
+      const apiUrl = `/api?category=${props.category}&pageSize=${props.pageSize}&page=${page}`;
+      props.setProgress(50);
+      let data = await fetch(apiUrl);
+      props.setProgress(80);
+      let parsedData = await data.json();
+      if (parsedData.status === "ok") {
+        setArticles(parsedData.articles);
+        setTotalResults(parsedData.totalResults);
+        setLoading(false);
+        props.setProgress(100);
+      }
     }
-    }catch(err){
+    catch (err) {
       console.log(err);
       setLoading(false);
       props.setProgress(100);
     }
   };
   const fetchMoreData = async () => {
-    try{
-    // const apiUrl = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&props.pageSize=${props.props.pageSize}`;
-    const apiUrl = `${host}/api?category=${
-      props.category
-    }&pageSize=${props.pageSize}&page=${page + 1}`;
-    setPage(page + 1);
-    let data = await fetch(apiUrl);
-    let parsedData = await data.json();
-    if (parsedData.status === "ok") {
-      setArticles(articles.concat(parsedData.articles));
-      setTotalResults(parsedData.totalResults);
-      setLoading(false);
-    }}
-    catch(err){
+    try {
+      const apiUrl = `/api?category=${props.category
+        }&pageSize=${props.pageSize}&page=${page + 1}`;
+      setPage(page + 1);
+      let data = await fetch(apiUrl);
+      let parsedData = await data.json();
+      if (parsedData.status === "ok") {
+        setArticles(articles.concat(parsedData.articles));
+        setTotalResults(parsedData.totalResults);
+        setLoading(false);
+      }
+    }
+    catch (err) {
       console.log(err);
       setLoading(false);
     }
@@ -77,7 +76,7 @@ const News = (props) => {
         hasMore={articles.length !== totalResults}
         loader={<Spinner />}
       >
-        <div className="row container" style={{margin: "0px"}}>
+        <div className="row container" style={{ margin: "0px" }}>
           {articles.map((element) => {
             return (
               element.url && (

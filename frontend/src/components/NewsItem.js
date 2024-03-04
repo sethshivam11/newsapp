@@ -1,5 +1,10 @@
 const NewsItem = (props) => {
   let { title, description, imgUrl, newsUrl, date, time, source, mode } = props;
+
+  function speakText(text) {
+    let msg = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(msg);
+  }
   return (
     <div>
       <div className="card my-3">
@@ -33,14 +38,19 @@ const NewsItem = (props) => {
             href={newsUrl}
             rel="noreferrer"
             target="_blank"
-            className="btn btn-sm btn"
-            style={{
-              backgroundColor: mode === "light" ? "#212529" : "#fff",
-              color: mode === "light" ? "#fff" : "#000",
-            }}
+            className={`btn btn-sm btn ${mode === "light" ? "btn-dark": "btn-light"}`}
           >
             Read More
           </a>
+          <button
+            href={newsUrl}
+            rel="noreferrer"
+            target="_blank"
+            className={`btn btn-sm btn btn-outline-info ms-2`}
+            onClick={() => speakText(`Heading - ${title} \n Description - ${description}`)}
+          >
+            Speak News
+          </button>
         </div>
       </div>
     </div>
