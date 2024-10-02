@@ -14,7 +14,7 @@ app.get("/api", async (req,res) => {
   let page = req.query.page;
   try {
     const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${apiKey}&pageSize=${pageSize}&page=${page}`
+      `https://newsapi.org/v2/top-headlines?category=${category}&apiKey=${apiKey}&pageSize=${pageSize}&page=${page}`
     );
     if(response.data.status){
       res.json(response.data);
